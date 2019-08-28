@@ -79,49 +79,96 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/dataManage',
     component: Layout,
+    redirect: '/dataManage/index',
+    hidden: false,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        component: () => import('@/views/dataManage/index'),
+        name: 'DataManage',
+        meta: { title: '数据管理', icon: 'table', noCache: true }
       }
     ]
   },
   {
-    path: '/guide',
+    path: '/monitorEvaluation',
     component: Layout,
-    redirect: '/guide/index',
+    redirect: '/MonitorEvaluation/monitor',
+    hidden: false,
+    name: 'MonitorEvaluation',
+    meta: {
+      title: '数据监测与评价',
+      icon: 'example'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        path: 'monitor',
+        component: () => import('@/views/profile/index'),
+        name: 'Monitor',
+        meta: {
+          title: '水质监测',
+          icon: 'example'
+        }
+      },
+      {
+        path: 'evaluation',
+        component: () => import('@/views/profile/index'),
+        name: 'Evaluation',
+        meta: {
+          title: '水质评价',
+          icon: 'example'
+        }
       }
     ]
   },
   {
-    path: '/profile',
+    path: '/query',
     component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
+    redirect: '/query/index',
+    hidden: false,
+    name: 'Query',
+    meta: {
+      title: '数据查询与分析',
+      icon: 'chart'
+    },
     children: [
       {
         path: 'index',
         component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
+        name: 'Info',
+        meta: {
+          title: '基础信息',
+          icon: 'example'
+        }
+      },
+      {
+        path: 'show',
+        component: () => import('@/views/profile/index'),
+        name: 'Show',
+        meta: {
+          title: '数据查询',
+          icon: 'example'
+        }
+      },
+      {
+        path: 'analyse',
+        component: () => import('@/views/profile/index'),
+        name: 'Analyse',
+        meta: {
+          title: '数据分析',
+          icon: 'example'
+        }
       }
     ]
   }
+
 ]
 
 /**
@@ -130,13 +177,13 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/permission',
+    path: '/system',
     component: Layout,
-    redirect: '/permission/page',
+    redirect: '/system/page',
     alwaysShow: true, // will always show the root menu
-    name: 'Permission',
+    name: 'System',
     meta: {
-      title: 'Permission',
+      title: '系统管理',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -190,37 +237,6 @@ export const asyncRoutes = [
   nestedRouter,
   tableRouter,
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: 'Example',
-      icon: 'example'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
-      }
-    ]
-  },
 
   {
     path: '/tab',
