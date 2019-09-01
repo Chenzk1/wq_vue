@@ -28,6 +28,7 @@ export default [
   {
     url: '/user/login',
     type: 'post',
+    // config 为传入的参数：{ username: username.trim(), password: password }
     response: config => {
       const { username } = config.body
       const token = tokens[username]
