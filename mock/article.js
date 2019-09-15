@@ -17,13 +17,17 @@ for (let i = 0; i < count; i++) {
     content: baseContent,
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',
-    'type|1': ['CN', 'US', 'JP', 'EU'],
     'status|1': ['published', 'draft', 'deleted'],
     display_time: '@datetime',
     comment_disabled: true,
     pageviews: '@integer(300, 5000)',
     image_uri,
-    platforms: ['a-platform']
+    platforms: ['a-platform'],
+    name: '@first',
+    province: '@region',
+    city: '@area',
+    'type|1': ['MODIS', 'GF-1', 'GF-2', 'GF-3', 'LANDSAT-5', 'LANDSAT-8'],
+
   }))
 }
 
