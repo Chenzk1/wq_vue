@@ -119,32 +119,32 @@ export default {
         name: '西湖',
         province: '杭州',
         city: '西湖区',
-        address: '杭州市西湖区西湖',
+        address: '杭州市西湖区西湖'
       }, {
         date: '2019-09-02',
         name: '西湖',
         province: '杭州',
         city: '西湖区',
-        address: '杭州市西湖区西湖',
-      },{
+        address: '杭州市西湖区西湖'
+      }, {
         date: '2019-09-02',
         name: '西湖',
         province: '杭州',
         city: '西湖区',
-        address: '杭州市西湖区西湖',
-      },{
+        address: '杭州市西湖区西湖'
+      }, {
         date: '2019-09-02',
         name: '西湖',
         province: '杭州',
         city: '西湖区',
-        address: '杭州市西湖区西湖',
-      },{
+        address: '杭州市西湖区西湖'
+      }, {
         date: '2019-09-02',
         name: '西湖',
         province: '杭州',
         city: '西湖区',
-        address: '杭州市西湖区西湖',
-      },]
+        address: '杭州市西湖区西湖'
+      }]
     }
   },
   computed: {

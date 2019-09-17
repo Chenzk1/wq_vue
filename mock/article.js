@@ -24,10 +24,11 @@ for (let i = 0; i < count; i++) {
     image_uri,
     platforms: ['a-platform'],
     name: '@first',
-    province: '@region',
-    city: '@area',
+    province: '@province',
+    city: '@city',
     'type|1': ['MODIS', 'GF-1', 'GF-2', 'GF-3', 'LANDSAT-5', 'LANDSAT-8'],
-
+    bands: '@integer(3, 1000)',
+    rgb: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
   }))
 }
 
