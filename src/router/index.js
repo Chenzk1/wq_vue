@@ -110,7 +110,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'monitor',
-        component: () => import('@/views/profile/index'),
+        component: () => import('@/views/monitorEvaluation/monitor'),
         name: 'Monitor',
         meta: {
           title: '水质监测',
@@ -119,7 +119,7 @@ export const constantRoutes = [
       },
       {
         path: 'evaluation',
-        component: () => import('@/views/profile/index'),
+        component: () => import('@/views/monitorEvaluation/evaluation'),
         name: 'Evaluation',
         meta: {
           title: '水质评价',
@@ -236,7 +236,6 @@ export const asyncRoutes = [
   chartsRouter,
   nestedRouter,
   tableRouter,
-
 
   {
     path: '/tab',
