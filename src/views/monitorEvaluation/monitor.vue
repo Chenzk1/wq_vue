@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <!-- <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="水体" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
@@ -14,7 +14,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-    </div>
+    </div> -->
 
     <el-table
       :key="tableKey"
@@ -24,14 +24,8 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      show-overflow-tooltip
-      @selection-change="handleSelectionChange"
       @sort-change="sortChange"
     >
-      <el-table-column
-        type="selection"
-        width="55"
-      />
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -62,68 +56,34 @@
           <span>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-      <div>
-        <el-button @click="toggleSelection(rows)">选择</el-button>
-      </div>
+      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            编辑
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleView(row)">
+            查看
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleDelete(row)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
+    
+    <el-form ref="list" :model="list" prop='list' label-width="100px" class="demo-ruleForm">
+      <el-form-item label="ID" prop='id'>
+        <el-input v-model="list.id"></el-input>
+      </el-form-item>
+      <!-- <div><h3>水体：{{name}}</h3></div> -->
+      <el-form-item label="水体" prop='name'>
+        <el-input type="textarea" v-model="list.name" :disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="拍摄时间" required name=timestamp>
+        <el-date-picker v-model="list.timestamp" align="right" type="date" placeholder="选择日期"> </el-date-picker>
+      </el-form-item>
+    </el-form>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-card class="box-card" :data="list">
-      <div slot="header" class="clearfix">
-        <span>选择数据</span>
-        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-      </div>
-      <div v-for="o in 4" :key="o" class="text item">
-        {{ '列表内容 ' + o }}
-      </div>
-    </el-card>
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="数据源" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in TypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="拍摄日期" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="请选择日期" />
-        </el-form-item>
-        <el-form-item label="水体" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入" />
-        </el-form-item>
-        <el-form-item v-show="dialogStatus!='create'" label="图片">
-          <div class="block">
-            <span class="demonstration">加载中</span>
-            <el-image :src="temp.rgb" />
-          </div>
-        </el-form-item>
-        <el-form-item v-show="dialogStatus==='create'" label="上传">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          Cancel
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          Confirm
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -141,7 +101,11 @@ const TypeOptions = [
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
-
+const provinceOptions = [
+  '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
+  '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
+  '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
+]
 // arr to obj, such as { CN : "China", US : "USA" }
 const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
@@ -149,7 +113,7 @@ const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'ComplexTable',
+  name: 'Monitor',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -172,17 +136,12 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        page: 1,
-        limit: 20,
-        province: undefined,
-        name: undefined,
-        type: undefined,
-        sort: '+id'
+        id: this.$route.params.id
       },
       importanceOptions: [1, 2, 3],
       TypeOptions,
+      provinceOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -213,6 +172,7 @@ export default {
   },
   created() {
     this.getList()
+    console.log(list)
   },
   methods: {
     handleSelectionChange(val) {
@@ -220,10 +180,10 @@ export default {
     },
     getList() {
       this.listLoading = true
+
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
-
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false

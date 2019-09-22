@@ -109,7 +109,7 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'monitor',
+        path: 'monitor/:id',
         component: () => import('@/views/monitorEvaluation/monitor'),
         name: 'Monitor',
         meta: {
