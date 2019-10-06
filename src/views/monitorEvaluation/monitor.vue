@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="monitor-container">
     <!-- <div class="filter-container">
       <el-input v-model="listQuery.name" placeholder="水体" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
@@ -16,7 +16,7 @@
       </el-button>
     </div> -->
 
-    <el-table
+    <!-- <el-table
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -24,7 +24,6 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="scope">
@@ -69,21 +68,166 @@
           </el-button>
         </template>
       </el-table-column>
-    </el-table>
-    
-    <el-form ref="list" :model="list" prop='list' label-width="100px" class="demo-ruleForm">
-      <el-form-item label="ID" prop='id'>
-        <el-input v-model="list.id"></el-input>
-      </el-form-item>
-      <!-- <div><h3>水体：{{name}}</h3></div> -->
-      <el-form-item label="水体" prop='name'>
-        <el-input type="textarea" v-model="list.name" :disabled="true"></el-input>
-      </el-form-item>
-      <el-form-item label="拍摄时间" required name=timestamp>
-        <el-date-picker v-model="list.timestamp" align="right" type="date" placeholder="选择日期"> </el-date-picker>
-      </el-form-item>
-    </el-form>
+    </el-table> -->
 
+    <el-row :gutter="24" style="margin:20px">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form ref="listForm" :model="listForm" prop='listForm' label-width="100px">
+            <el-form-item label="ID" prop='id'>
+              <el-input v-model="listForm.id" :disabled="true"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="水体" prop='id'>
+              <div><h3>{{listForm.name}}</h3></div>
+            </el-form-item> -->
+            <el-form-item label="水体" prop='name'>
+              <el-input v-model="listForm.name" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="城市" prop='city'>
+              <el-input v-model="listForm.city" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="来源" prop='type'>
+              <el-input v-model="listForm.type" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="波段数" prop='bands'>
+              <el-input v-model="listForm.bands" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="拍摄时间" name=timestamp>
+              <el-date-picker :disabled="true" v-model="listForm.timestamp" align="right" type="date" placeholder="选择日期"> </el-date-picker>
+            </el-form-item>
+            <el-form-item label="RGB图片" prop='rgb'>
+              <img v-if="listForm.rgb" :src="listForm.rgb" style="width:200px;height:200px;display:block">
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form :model="listForm" prop='listForm.tp' ref='listForm.tp' label-width="100px">
+            <el-form-item label="参数1">
+              <el-input v-model="listForm.tp.para1" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item label="参数2">
+              <el-input v-model="listForm.tp.para2" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item size="medium" style="vertical-align:middle;text-align:center">
+              <el-button type="primary" round="True" size="medium" @click="displayResult('tp')">总磷反演</el-button>
+            </el-form-item>
+            <el-form-item style="vertical-align:middle;text-align:center">
+              <img v-if="listForm.tp.resultPicture" :src="listForm.tp.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form :model="listForm" prop='listForm.tn' ref='listForm.tn' label-width="100px">
+            <el-form-item label="参数1">
+              <el-input v-model="listForm.tn.para1" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item label="参数2">
+              <el-input v-model="listForm.tn.para2" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item size="medium" style="vertical-align:middle;text-align:center">
+              <el-button type="primary" round="True" size="medium" @click="displayResult('tn')">总氮反演</el-button>
+            </el-form-item>
+            <el-form-item style="vertical-align:middle;text-align:center">
+              <img v-if="listForm.tn.resultPicture" :src="listForm.tn.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="24" style="margin:20px">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form :model="listForm" prop='listForm.chla' ref='listForm.chla' label-width="100px">
+            <el-form-item label="参数1">
+              <el-input v-model="listForm.chla.para1" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item label="参数2">
+              <el-input v-model="listForm.chla.para2" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item size="medium" style="vertical-align:middle;text-align:center">
+              <el-button type="primary" round="True" size="medium" @click="displayResult('chla')">叶绿素a反演</el-button>
+            </el-form-item>
+            <el-form-item style="vertical-align:middle;text-align:center">
+              <img v-if="listForm.chla.resultPicture" :src="listForm.chla.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form :model="listForm" prop='listForm.tss' ref='listForm.tss' label-width="100px">
+            <el-form-item label="参数1">
+              <el-input v-model="listForm.tss.para1" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item label="参数2">
+              <el-input v-model="listForm.tss.para2" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item size="medium" style="vertical-align:middle;text-align:center">
+              <el-button type="primary" round="True" size="medium" @click="displayResult('tss')">总悬浮物反演</el-button>
+            </el-form-item>
+            <el-form-item style="vertical-align:middle;text-align:center">
+              <img v-if="listForm.tss.resultPicture" :src="listForm.tss.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form :model="listForm" prop='listForm.nh' ref='listForm.nh' label-width="100px">
+            <el-form-item label="参数1">
+              <el-input v-model="listForm.nh.para1" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item label="参数2">
+              <el-input v-model="listForm.nh.para2" placeholder="5"></el-input>
+            </el-form-item>
+            <el-form-item size="medium" style="vertical-align:middle;text-align:center">
+              <el-button type="primary" round="True" size="medium" @click="displayResult('nh')">氨氮反演</el-button>
+            </el-form-item>
+            <el-form-item style="vertical-align:middle;text-align:center">
+              <img v-if="listForm.nh.resultPicture" :src="listForm.nh.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="24" style="margin:20px">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="form-wrapper">
+          <el-form :model="listForm" prop='listForm.evaluate' ref='listForm.evaluate' label-width="100px">
+            <el-form-item label="水质评价方法">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in evaluteMethodOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item size="medium" style="vertical-align:middle;text-align:center">
+              <el-button type="primary" round="True" size="medium" @click="displayLevel('single')">水质评价</el-button>
+            </el-form-item>
+            <el-form-item label="水质评价结果">
+              1
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
+
+    <!-- <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+        <el-form :model="listForm" prop='listForm.chla' ref='listForm.chla' label-width="100px">
+          <el-form-item label="水质评价结果">
+          </el-form-item>
+        </el-form>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -100,6 +244,11 @@ const TypeOptions = [
   { key: 'GF-3', display_name: '高分一号' },
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
+]
+const evaluteMethodOptions = [
+  { label: 'single', value: '单因子'},
+  { label: 'multi', value: '多因子'},
+  { label: 'svr', value: 'SVR'},
 ]
 const provinceOptions = [
   '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
@@ -133,6 +282,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      listForm: undefined,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -141,6 +291,7 @@ export default {
       importanceOptions: [1, 2, 3],
       TypeOptions,
       provinceOptions,
+      evaluteMethodOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       showReviewer: false,
       temp: {
@@ -172,7 +323,8 @@ export default {
   },
   created() {
     this.getList()
-    console.log(list)
+    // console.log(this.list)
+    // console.log(this.listForm)
   },
   methods: {
     handleSelectionChange(val) {
@@ -184,6 +336,7 @@ export default {
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
+        this.listForm = response.data.items[0]
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -200,20 +353,6 @@ export default {
         type: 'success'
       })
       row.status = status
-    },
-    sortChange(data) {
-      const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
-    },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
     },
     resetTemp() {
       this.temp = {
@@ -337,12 +476,40 @@ export default {
         : sort === `-${key}`
           ? 'descending'
           : ''
-    }
+    },
+    displayResult: function(key) {
+      console.log(key)
+    },
+    displayLevel: function(key) {
+      console.log(key)
+    },
   }
 }
 </script>
 
 <style>
+  .monitor-container {
+    padding: 32px;
+    background-color: rgb(240, 242, 245);
+    position: relative;
+
+    .github-corner {
+      position: absolute;
+      top: 0px;
+      border: 0;
+      right: 0;
+    }
+
+    .form-wrapper {
+      background: #fff;
+      padding: 16px 16px 0;
+      margin-bottom: 32px;
+
+    }
+
+
+  }
+
   .text {
     font-size: 14px;
   }

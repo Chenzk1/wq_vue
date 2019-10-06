@@ -8,6 +8,14 @@ export function fetchList(query) {
   })
 }
 
+export function fetchUnique(query) {
+  return request({
+    url: '/article/unique',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchArticle(id) {
   return request({
     url: '/article/detail',

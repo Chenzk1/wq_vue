@@ -28,7 +28,41 @@ for (let i = 0; i < count; i++) {
     city: '@city',
     'type|1': ['MODIS', 'GF-1', 'GF-2', 'GF-3', 'LANDSAT-5', 'LANDSAT-8'],
     bands: '@integer(3, 1000)',
-    rgb: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+    rgb: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    tp: {
+      para1: 6,
+      para2: 6,
+      resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    },
+    tn: {
+      para1: 6,
+      para2: 6,
+      resultPicture: 'https://uss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    },
+    chla: {
+      para1: 6,
+      para2: 6,
+      resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    },
+    tss: {
+      para1: 6,
+      para2: 6,
+      resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    },
+    cod: {
+      para1: 6,
+      para2: 6,
+      resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    },
+    nh: {
+      para1: 6,
+      para2: 6,
+    },
+    evalute:{
+      'single': '1',
+      'multi': '2',
+      'svr': '3',
+    }
   }))
 }
 

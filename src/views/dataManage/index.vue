@@ -136,8 +136,8 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 const TypeOptions = [
   { key: 'MODIS', display_name: 'MODIS' },
   { key: 'GF-1', display_name: '高分一号' },
-  { key: 'GF-2', display_name: '高分一号' },
-  { key: 'GF-3', display_name: '高分一号' },
+  { key: 'GF-2', display_name: '高分二号' },
+  { key: 'GF-3', display_name: '高分三号' },
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]

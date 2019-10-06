@@ -5,20 +5,14 @@
       <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery.type" placeholder="数据源" clearable class="filter-item" style="width: 130px">
+      <el-select v-model="listQuery.type" placeholder="指标" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in TypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-select v-model="listQuery.type" placeholder="起始时间" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in TypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
-      </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        导出
       </el-button>
     </div>
 
@@ -42,7 +36,7 @@
           <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="水体" min-width="150px">
+      <el-table-column label="水体" min-width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -62,16 +56,21 @@
           <span>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="反演结果图" class-name="status-col" width="300">
+        <template slot-scope="scope">
+          <img :src="scope.row.tp.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
+        </template>
+      </el-table-column>
+      <el-table-column label="统计值" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
+            均值
           </el-button>
           <el-button type="primary" size="mini" @click="handleView(row)">
-            查看
+            最大值
           </el-button>
           <el-button type="primary" size="mini" @click="handleDelete(row)">
-            删除
+            最小值
           </el-button>
         </template>
       </el-table-column>
@@ -136,12 +135,16 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 const TypeOptions = [
   { key: 'MODIS', display_name: 'MODIS' },
   { key: 'GF-1', display_name: '高分一号' },
-  { key: 'GF-2', display_name: '高分一号' },
-  { key: 'GF-3', display_name: '高分一号' },
+  { key: 'GF-2', display_name: '高分二号' },
+  { key: 'GF-3', display_name: '高分三号' },
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
-
+const provinceOptions = [
+  '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
+  '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
+  '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
+]
 // arr to obj, such as { CN : "China", US : "USA" }
 const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
@@ -149,7 +152,7 @@ const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'ComplexTable',
+  name: 'dataManage',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -179,10 +182,9 @@ export default {
         type: undefined,
         sort: '+id'
       },
-      importanceOptions: [1, 2, 3],
       TypeOptions,
+      provinceOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -219,11 +221,14 @@ export default {
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
+        this.provinceOptions1 = Array.from(new Set(response.data.items.province))
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+        console.log(this.list)
+        console.log(this.provinceOptions1)
       })
     },
     handleFilter() {
@@ -263,10 +268,13 @@ export default {
       }
     },
     handleView(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'view'
-      this.dialogFormVisible = true
+      // this.temp = Object.assign({}, row) // copy obj
+      // this.temp.timestamp = new Date(this.temp.timestamp)
+      // this.dialogStatus = 'view'
+      // this.dialogFormVisible = true
+      this.$router.push({
+          path: `/monitorEvaluation/monitor/${row.id}`,
+      })
     },
     handleCreate() {
       this.resetTemp()

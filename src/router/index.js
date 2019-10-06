@@ -118,22 +118,23 @@ export const constantRoutes = [
         }
       },
       {
-        path: 'evaluation',
-        component: () => import('@/views/monitorEvaluation/evaluation'),
-        name: 'Evaluation',
-        meta: {
-          title: '水质评价',
-          icon: 'example'
-        }
+        path: '',
+        component: Layout,
+        children: [
+          {
+            path: 'http://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=0DB5914A2BE0CB5D4F459544EDC0E09E',
+            meta: { title: '地表水标准', icon: 'link' }
+          }
+        ]
       }
     ]
   },
   {
-    path: '/query',
+    path: '/queryAnalysis',
     component: Layout,
-    redirect: '/query/index',
+    redirect: '/queryAnalysis/index',
     hidden: false,
-    name: 'Query',
+    name: 'QueryAnalysis',
     meta: {
       title: '数据查询与分析',
       icon: 'chart'
@@ -141,26 +142,26 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/profile/index'),
+        component: () => import('@/views/queryAnalysis/index'),
         name: 'Info',
         meta: {
-          title: '基础信息',
+          title: '信息统计',
           icon: 'example'
         }
       },
       {
-        path: 'show',
-        component: () => import('@/views/profile/index'),
-        name: 'Show',
+        path: 'query',
+        component: () => import('@/views/queryAnalysis/query'),
+        name: 'Query',
         meta: {
           title: '数据查询',
           icon: 'example'
         }
       },
       {
-        path: 'analyse',
-        component: () => import('@/views/profile/index'),
-        name: 'Analyse',
+        path: 'analysis',
+        component: () => import('@/views/queryAnalysis/analysis'),
+        name: 'Analysis',
         meta: {
           title: '数据分析',
           icon: 'example'
