@@ -122,7 +122,7 @@ export const constantRoutes = [
         component: Layout,
         children: [
           {
-            path: 'http://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=0DB5914A2BE0CB5D4F459544EDC0E09E',
+            path: 'http://kjs.mee.gov.cn/hjbhbz/bzwb/shjbh/shjzlbz/200206/t20020601_66497.shtml',
             meta: { title: '地表水标准', icon: 'link' }
           }
         ]
@@ -194,7 +194,7 @@ export const asyncRoutes = [
         component: () => import('@/views/permission/page'),
         name: 'PagePermission',
         meta: {
-          title: 'Page Permission',
+          title: '页面权限',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
@@ -203,7 +203,7 @@ export const asyncRoutes = [
         component: () => import('@/views/permission/directive'),
         name: 'DirectivePermission',
         meta: {
-          title: 'Directive Permission'
+          title: '定向权限'
           // if do not set roles, means: this page does not require permission
         }
       },
@@ -212,7 +212,7 @@ export const asyncRoutes = [
         component: () => import('@/views/permission/role'),
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission',
+          title: '角色管理',
           roles: ['admin']
         }
       }

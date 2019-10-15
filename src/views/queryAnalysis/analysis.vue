@@ -32,9 +32,9 @@ const TypeOptions = [
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
 const provinceOptions = [
-  '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
-  '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
-  '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
+  '北京市', '广东省', '山东省', '江苏省', '河南省', '上海市', '河北省', '浙江省', '香港特别行政区', '陕西省', '湖南省', '重庆市',
+  '福建省', '天津市', '云南省', '四川省', '广西壮族自治区', '安徽省', '海南省', '江西省', '湖北省', '山西省', '辽宁省', '台湾省',
+  '黑龙江', '内蒙古自治区', '澳门特别行政区', '贵州省', '甘肃省', '青海省', '新疆维吾尔自治区', '西藏自治区', '吉林省', '宁夏回族自治区'
 ]
 // arr to obj, such as { CN : "China", US : "USA" }
 const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
@@ -45,7 +45,7 @@ export default {
   name: 'LineChart',
   components: { Chart },
   data() {
-    return{
+    return {
       listLoading: true,
       listQuery: {
         page: 1,
@@ -57,27 +57,27 @@ export default {
       },
       TypeOptions,
       provinceOptions,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }]
     }
   },
-    methods: {
-      getList() {
-        this.listLoading = true
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.items
-          this.total = response.data.total
+  methods: {
+    getList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then(response => {
+        this.list = response.data.items
+        this.total = response.data.total
 
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
-      handleFilter() {
-        this.listQuery.page = 1
-        this.getList()
-      },
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
     }
+  }
 }
 </script>
 

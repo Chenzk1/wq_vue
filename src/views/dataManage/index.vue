@@ -1,13 +1,25 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" placeholder="水体" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.name" placeholder="水体搜索" style="width: 180px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.name" placeholder="水体选择" clearable style="width: 180px" class="filter-item">
+        <el-option v-for="item in nameOptions" :key="item" :label="item" :value="item" />
+      </el-select>
       <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery.type" placeholder="数据源" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in TypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
+      <el-select v-model="listQuery.type" placeholder="数据源" clearable class="filter-item" style="width: 90px">
+        <el-option v-for="item in TypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
+      <el-date-picker
+        v-model="listQuery.dateRange"
+        type="daterange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        value-format="timestamp"
+        class="filter-item"  style="width: 500px">
+      </el-date-picker>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -92,6 +104,12 @@
         <el-form-item label="水体" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
+        <el-form-item label="省份" prop="province">
+          <el-input v-model="temp.province" />
+        </el-form-item>
+        <el-form-item label="城市" prop="city">
+          <el-input v-model="temp.city" />
+        </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入" />
         </el-form-item>
@@ -102,7 +120,14 @@
           </div>
         </el-form-item>
         <el-form-item v-show="dialogStatus==='create'" label="上传">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入" />
+          <el-upload
+            class="upload-demo"
+            drag
+            action="https://jsonplaceholder.typicode.com/posts/"
+            multiple>
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -133,7 +158,7 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-const TypeOptions = [
+let TypeOptions = [
   { key: 'MODIS', display_name: 'MODIS' },
   { key: 'GF-1', display_name: '高分一号' },
   { key: 'GF-2', display_name: '高分二号' },
@@ -141,7 +166,8 @@ const TypeOptions = [
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
-const provinceOptions = [
+let nameOptions = []
+let provinceOptions = [
   '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
   '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
   '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
@@ -153,7 +179,7 @@ const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
-  name: 'dataManage',
+  name: 'DataManage',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -181,11 +207,13 @@ export default {
         province: undefined,
         name: undefined,
         type: undefined,
-        sort: '+id'
+        sort: '+id',
+        dateRange: undefined
       },
       TypeOptions,
       provinceOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      nameOptions,
       showReviewer: false,
       temp: {
         id: undefined,
@@ -206,9 +234,12 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        type: [{ required: true, message: '请输入数据源', trigger: 'blur' }],
+        timestamp: [{ type: 'date', required: true, message: '请输入拍摄时间', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入水体', trigger: 'blur' }],
+        province: [{ required: true, message: '请输入省份', trigger: 'blur' }],
+        city: [{ required: true, message: '请输入城市', trigger: 'blur' }],
+        rgb: [{ required: true, message: '请上传图片', trigger: 'blur' }],
       },
       downloadLoading: false
     }
@@ -271,7 +302,7 @@ export default {
       // this.dialogStatus = 'view'
       // this.dialogFormVisible = true
       this.$router.push({
-          path: `/monitorEvaluation/monitor/${row.id}`,
+        path: `/monitorEvaluation/monitor/${row.id}`
       })
     },
     handleCreate() {
@@ -302,7 +333,6 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -313,7 +343,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateArticle(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -325,7 +354,7 @@ export default {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Update Successfully',
+              message: '更新成功',
               type: 'success',
               duration: 2000
             })
@@ -336,7 +365,7 @@ export default {
     handleDelete(row) {
       this.$notify({
         title: 'Success',
-        message: 'Delete Successfully',
+        message: '删除成功',
         type: 'success',
         duration: 2000
       })

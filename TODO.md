@@ -1,0 +1,2 @@
+- update api: url: '/article/update',type: 'post',
+- delete api: 未写

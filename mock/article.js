@@ -71,12 +71,13 @@ export default [
     url: '/article/list',
     type: 'get',
     response: config => {
-      const { type, name, page = 1, limit = 20, sort, id } = config.query
+      const { type, name, page = 1, limit = 20, sort, id, dateRange  } = config.query
 
       let mockList = List.filter(item => {
         if (type && item.type !== type) return false
         if (name && item.name.indexOf(name) < 0) return false
         if (id && item.id != id) return false
+        if (dateRange && (item.timestamp < dateRange[0] || item.timestamp > dateRange[1])) return false
         return true
       })
 
@@ -91,6 +92,67 @@ export default [
         data: {
           total: mockList.length,
           items: pageList
+        }
+      }
+    }
+  },
+
+  {
+    url: '/article/unique',
+    type: 'get',
+    response: config => {
+      const { type, name, province, city, id, dateRange } = config.query
+      const uniqueList = List.filter(item => {
+        if (type && item.type !== type) return false
+        if (name && item.name.indexOf(name) < 0) return false
+        if (id && item.id != id) return false
+        if (province && item.province != province) return false
+        if (city && item.city != city) return false
+        if (dateRange && (item.timestamp < dateRange[0] || item.timestamp > dateRange[1])) return false
+        return true
+      })
+      let provinceUnique = []
+      let provinceNunique = 0
+      let pictureUnique = []
+      let pictureNunique = 0
+      let nameUnique = []
+      let nameNunique = 0
+      let typeUnique = []
+      let typeNunique = []
+      let startDate = 75988343730300000
+      let endDate = 759883437303
+
+      for (let i = 0; i < uniqueList.length; i++) {
+        provinceUnique.push(uniqueList[i].province)
+        pictureUnique.push(uniqueList[i].picture)
+        nameUnique.push(uniqueList[i].name)
+        typeUnique.push(uniqueList[i].type)
+        startDate = Math.min(startDate, uniqueList[i].timestamp)
+        endDate = Math.max(endDate, uniqueList[i].timestamp)
+      }
+
+      provinceUnique = Array.from(new Set(provinceUnique))
+      provinceNunique = provinceUnique.length
+      pictureUnique = Array.from(new Set(pictureUnique))
+      pictureNunique = pictureUnique.length
+      nameUnique = Array.from(new Set(nameUnique))
+      nameNunique = nameUnique.length
+      typeUnique = Array.from(new Set(typeUnique))
+      typeNunique = typeUnique.length
+
+      return {
+        code: 20000,
+        data: {
+          provinceUnique,
+          provinceNunique,
+          pictureUnique,
+          pictureNunique,
+          nameUnique,
+          nameNunique,
+          typeUnique,
+          typeNunique,
+          startDate,
+          endDate
         }
       }
     }
@@ -144,7 +206,25 @@ export default [
   {
     url: '/article/update',
     type: 'post',
-    response: _ => {
+    response: config => {
+      // const { type, name, page = 1, limit = 20, sort, id, dateRange  } = config.query
+
+      // let mockList = List.filter(item => {
+      //   if (type && item.type !== type) return false
+      //   if (name && item.name.indexOf(name) < 0) return false
+      //   if (id && item.id != id) return false
+      //   if (dateRange && (item.timestamp < dateRange[0] || item.timestamp > dateRange[1])) return false
+      //   return true
+      // })
+
+
+      // for (const v of this.list) {
+      //   if (v.id === this.temp.id) {
+      //     const index = this.list.indexOf(v)
+      //     this.list.splice(index, 1, this.temp)
+      //     break
+      //   }
+      // }
       return {
         code: 20000,
         data: 'success'

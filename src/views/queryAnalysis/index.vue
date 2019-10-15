@@ -2,46 +2,46 @@
   <div class="app-container">
     <el-card style="margin-bottom:20px;">
       <div slot="header" class="clearfix">
-        <span>信息统计</span>
+        <span>数据统计</span>
       </div>
 
       <div class="user-profile">
         <div class="box-center">
           <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
-            <div>Hello</div>
+            <div>你好</div>
             {{ user.role }}
           </pan-thumb>
         </div>
         <div class="box-center">
           <div class="user-name text-center">{{ user.name }}</div>
-          <div class="user-role text-center text-muted">{{ user.role}}</div>
+          <div class="user-role text-center text-muted">{{ user.role }}</div>
         </div>
       </div>
 
       <div class="user-bio">
-        <div class="user-education user-bio-section">
+        <!-- <div class="user-education user-bio-section">
           <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>Education</span></div>
           <div class="user-bio-section-body">
             <div class="text-muted">
               JS in Computer Science from the University of Technology
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="user-skills user-bio-section">
-          <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Skills</span></div>
+          <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>详细信息</span></div>
           <div class="user-bio-section-body">
             <div class="progress-item">
-              <span>水体数量:20</span>
+              <span>水体数量:{{this.nameNunique}}</span>
             </div>
             <div class="progress-item">
-              <span>图片数量:30</span>
+              <span>图片数量:{{this.pictureNunique}}</span>
             </div>
             <div class="progress-item">
-              <span>时间范围：2018.01~2019.09</span>
+              <span>时间范围：{{this.startDate | parseTime('{y}-{m}-{d}') }} ~ {{this.endDate | parseTime('{y}-{m}-{d}') }}</span>
             </div>
             <div class="progress-item">
-              <span>数据源：高分一号、高分二号、高分三号、MODIS、LANDSAT-5、LANDSAT-8</span>
+              <span>数据源：{{this.typeUnique}}</span>
             </div>
             <div class="progress-item">
               <span>可反演指标：总磷（TP）、总氮（TN）、叶绿素a（Chl-a）、氨氮（NH）、总悬浮物（TSS）</span>
@@ -55,21 +55,67 @@
 
 <script>
 import PanThumb from '@/components/PanThumb'
+import { fetchUnique } from '@/api/article'
+import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Statistics',
   components: { PanThumb },
-  props: {
-    user: {
-      type: Object,
-      default: () => {
-        return {
-          name: 'test',
-          email: 'test',
-          avatar: 'test',
-          roles: 'test'
-        }
-      }
+  data(){
+    return{
+      user:{},
+      uniqueQuery: {
+      province: undefined,
+      name: undefined,
+      type: undefined,
+      id: undefined,
+      city: undefined
+      },
+      pictureNunique:0,
+      nameNunique:0,
+      typeUnique:0,
+      provinceNunique:0,
+      startDate: undefined,
+      endDate: undefined,
     }
+  },
+  computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
+    ])
+  },
+  created() {
+    this.getUser(),
+    this.getUnique()
+  },
+  methods: {
+    getUser() {
+      this.user = {
+        name: this.name,
+        role: this.roles.join(' | '),
+        email: 'admin@test.com',
+        avatar: this.avatar
+      }
+    },
+    getUnique(){
+      this.listLoading = true
+      fetchUnique(this.uniqueQuery).then(response => {
+        this.pictureNunique = response.data.pictureNunique
+        this.nameNunique = response.data.nameNunique
+        this.typeUnique = response.data.typeUnique
+        this.provinceNunique = response.data.provinceNunique
+
+        this.startDate = response.data.startDate
+        this.endDate = response.data.endDate
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+
+      })
+    },
   }
 }
 </script>

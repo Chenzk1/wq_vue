@@ -73,29 +73,29 @@
     <el-row :gutter="24" style="margin:20px">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form ref="listForm" :model="listForm" prop='listForm' label-width="100px">
-            <el-form-item label="ID" prop='id'>
-              <el-input v-model="listForm.id" :disabled="true"></el-input>
+          <el-form ref="listForm" :model="listForm" prop="listForm" label-width="100px">
+            <el-form-item label="ID" prop="id">
+              <el-input v-model="listForm.id" :disabled="true" />
             </el-form-item>
             <!-- <el-form-item label="水体" prop='id'>
               <div><h3>{{listForm.name}}</h3></div>
             </el-form-item> -->
-            <el-form-item label="水体" prop='name'>
-              <el-input v-model="listForm.name" :disabled="true"></el-input>
+            <el-form-item label="水体" prop="name">
+              <el-input v-model="listForm.name" :disabled="true" />
             </el-form-item>
-            <el-form-item label="城市" prop='city'>
-              <el-input v-model="listForm.city" :disabled="true"></el-input>
+            <el-form-item label="城市" prop="city">
+              <el-input v-model="listForm.city" :disabled="true" />
             </el-form-item>
-            <el-form-item label="来源" prop='type'>
-              <el-input v-model="listForm.type" :disabled="true"></el-input>
+            <el-form-item label="来源" prop="type">
+              <el-input v-model="listForm.type" :disabled="true" />
             </el-form-item>
-            <el-form-item label="波段数" prop='bands'>
-              <el-input v-model="listForm.bands" :disabled="true"></el-input>
+            <el-form-item label="波段数" prop="bands">
+              <el-input v-model="listForm.bands" :disabled="true" />
             </el-form-item>
-            <el-form-item label="拍摄时间" name=timestamp>
-              <el-date-picker :disabled="true" v-model="listForm.timestamp" align="right" type="date" placeholder="选择日期"> </el-date-picker>
+            <el-form-item label="拍摄时间" name="timestamp">
+              <el-date-picker v-model="listForm.timestamp" :disabled="true" align="right" type="date" placeholder="选择日期" />
             </el-form-item>
-            <el-form-item label="RGB图片" prop='rgb'>
+            <el-form-item label="RGB图片" prop="rgb">
               <img v-if="listForm.rgb" :src="listForm.rgb" style="width:200px;height:200px;display:block">
             </el-form-item>
           </el-form>
@@ -103,12 +103,12 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form :model="listForm" prop='listForm.tp' ref='listForm.tp' label-width="100px">
+          <el-form ref="listForm.tp" :model="listForm" prop="listForm.tp" label-width="100px">
             <el-form-item label="参数1">
-              <el-input v-model="listForm.tp.para1" placeholder="5"></el-input>
+              <el-input v-model="listForm.tp.para1" placeholder="5" />
             </el-form-item>
             <el-form-item label="参数2">
-              <el-input v-model="listForm.tp.para2" placeholder="5"></el-input>
+              <el-input v-model="listForm.tp.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
               <el-button type="primary" round="True" size="medium" @click="displayResult('tp')">总磷反演</el-button>
@@ -121,12 +121,12 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form :model="listForm" prop='listForm.tn' ref='listForm.tn' label-width="100px">
+          <el-form ref="listForm.tn" :model="listForm" prop="listForm.tn" label-width="100px">
             <el-form-item label="参数1">
-              <el-input v-model="listForm.tn.para1" placeholder="5"></el-input>
+              <el-input v-model="listForm.tn.para1" placeholder="5" />
             </el-form-item>
             <el-form-item label="参数2">
-              <el-input v-model="listForm.tn.para2" placeholder="5"></el-input>
+              <el-input v-model="listForm.tn.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
               <el-button type="primary" round="True" size="medium" @click="displayResult('tn')">总氮反演</el-button>
@@ -142,12 +142,12 @@
     <el-row :gutter="24" style="margin:20px">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form :model="listForm" prop='listForm.chla' ref='listForm.chla' label-width="100px">
+          <el-form ref="listForm.chla" :model="listForm" prop="listForm.chla" label-width="100px">
             <el-form-item label="参数1">
-              <el-input v-model="listForm.chla.para1" placeholder="5"></el-input>
+              <el-input v-model="listForm.chla.para1" placeholder="5" />
             </el-form-item>
             <el-form-item label="参数2">
-              <el-input v-model="listForm.chla.para2" placeholder="5"></el-input>
+              <el-input v-model="listForm.chla.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
               <el-button type="primary" round="True" size="medium" @click="displayResult('chla')">叶绿素a反演</el-button>
@@ -160,12 +160,12 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form :model="listForm" prop='listForm.tss' ref='listForm.tss' label-width="100px">
+          <el-form ref="listForm.tss" :model="listForm" prop="listForm.tss" label-width="100px">
             <el-form-item label="参数1">
-              <el-input v-model="listForm.tss.para1" placeholder="5"></el-input>
+              <el-input v-model="listForm.tss.para1" placeholder="5" />
             </el-form-item>
             <el-form-item label="参数2">
-              <el-input v-model="listForm.tss.para2" placeholder="5"></el-input>
+              <el-input v-model="listForm.tss.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
               <el-button type="primary" round="True" size="medium" @click="displayResult('tss')">总悬浮物反演</el-button>
@@ -178,12 +178,12 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form :model="listForm" prop='listForm.nh' ref='listForm.nh' label-width="100px">
+          <el-form ref="listForm.nh" :model="listForm" prop="listForm.nh" label-width="100px">
             <el-form-item label="参数1">
-              <el-input v-model="listForm.nh.para1" placeholder="5"></el-input>
+              <el-input v-model="listForm.nh.para1" placeholder="5" />
             </el-form-item>
             <el-form-item label="参数2">
-              <el-input v-model="listForm.nh.para2" placeholder="5"></el-input>
+              <el-input v-model="listForm.nh.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
               <el-button type="primary" round="True" size="medium" @click="displayResult('nh')">氨氮反演</el-button>
@@ -199,7 +199,7 @@
     <el-row :gutter="24" style="margin:20px">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
-          <el-form :model="listForm" prop='listForm.evaluate' ref='listForm.evaluate' label-width="100px">
+          <el-form ref="listForm.evaluate" :model="listForm" prop="listForm.evaluate" label-width="100px">
             <el-form-item label="水质评价方法">
               <el-select v-model="value" placeholder="请选择">
                 <el-option
@@ -207,8 +207,8 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                  :disabled="item.disabled">
-                </el-option>
+                  :disabled="item.disabled"
+                />
               </el-select>
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
@@ -246,14 +246,14 @@ const TypeOptions = [
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
 const evaluteMethodOptions = [
-  { label: 'single', value: '单因子'},
-  { label: 'multi', value: '多因子'},
-  { label: 'svr', value: 'SVR'},
+  { label: 'single', value: '单因子' },
+  { label: 'multi', value: '多因子' },
+  { label: 'svr', value: 'SVR' }
 ]
 const provinceOptions = [
-  '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
-  '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
-  '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
+  '北京市', '广东省', '山东省', '江苏省', '河南省', '上海市', '河北省', '浙江省', '香港特别行政区', '陕西省', '湖南省', '重庆市',
+  '福建省', '天津市', '云南省', '四川省', '广西壮族自治区', '安徽省', '海南省', '江西省', '湖北省', '山西省', '辽宁省', '台湾省',
+  '黑龙江', '内蒙古自治区', '澳门特别行政区', '贵州省', '甘肃省', '青海省', '新疆维吾尔自治区', '西藏自治区', '吉林省', '宁夏回族自治区'
 ]
 // arr to obj, such as { CN : "China", US : "USA" }
 const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
@@ -482,7 +482,7 @@ export default {
     },
     displayLevel: function(key) {
       console.log(key)
-    },
+    }
   }
 }
 </script>
@@ -506,7 +506,6 @@ export default {
       margin-bottom: 32px;
 
     }
-
 
   }
 
