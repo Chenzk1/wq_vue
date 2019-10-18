@@ -18,8 +18,9 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         value-format="timestamp"
-        class="filter-item"  style="width: 500px">
-      </el-date-picker>
+        class="filter-item"
+        style="width: 500px"
+      />
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -124,8 +125,9 @@
             class="upload-demo"
             drag
             action="https://jsonplaceholder.typicode.com/posts/"
-            multiple>
-            <i class="el-icon-upload"></i>
+            multiple
+          >
+            <i class="el-icon-upload" />
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           </el-upload>
         </el-form-item>
@@ -158,7 +160,7 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-let TypeOptions = [
+const TypeOptions = [
   { key: 'MODIS', display_name: 'MODIS' },
   { key: 'GF-1', display_name: '高分一号' },
   { key: 'GF-2', display_name: '高分二号' },
@@ -166,11 +168,11 @@ let TypeOptions = [
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
-let nameOptions = []
-let provinceOptions = [
-  '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
-  '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
-  '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
+const nameOptions = []
+const provinceOptions = [
+  '北京市', '广东省', '山东省', '江苏省', '河南省', '上海市', '河北省', '浙江省', '香港特别行政区', '陕西省', '湖南省', '重庆市',
+  '福建省', '天津市', '云南省', '四川省', '广西壮族自治区', '安徽省', '海南省', '江西省', '湖北省', '山西省', '辽宁省', '台湾省',
+  '黑龙江', '内蒙古自治区', '澳门特别行政区', '贵州省', '甘肃省', '青海省', '新疆维吾尔自治区', '西藏自治区', '吉林省', '宁夏回族自治区'
 ]
 // arr to obj, such as { CN : "China", US : "USA" }
 const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
@@ -239,7 +241,7 @@ export default {
         name: [{ required: true, message: '请输入水体', trigger: 'blur' }],
         province: [{ required: true, message: '请输入省份', trigger: 'blur' }],
         city: [{ required: true, message: '请输入城市', trigger: 'blur' }],
-        rgb: [{ required: true, message: '请上传图片', trigger: 'blur' }],
+        rgb: [{ required: true, message: '请上传图片', trigger: 'blur' }]
       },
       downloadLoading: false
     }

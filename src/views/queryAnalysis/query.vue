@@ -18,8 +18,9 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         value-format="timestamp"
-        class="filter-item"  style="width: 500px">
-      </el-date-picker>
+        class="filter-item"
+        style="width: 500px"
+      />
       <!-- <el-date-picker type="date" placeholder="选择日期" v-model="listQuery.startDate" style="width: 100%;"></el-date-picker>
       <el-col class="line" :span="2">-</el-col>
       <el-time-picker placeholder="选择日期" v-model="listQuery.endDate" style="width: 100%;"></el-time-picker> -->
@@ -74,17 +75,88 @@
         </template>
       </el-table-column>
       <el-table-column label="统计值" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="getUnique()">
-            均值
-          </el-button>
-          <el-button type="primary" size="mini" @click="handleView(row)">
-            最大值
-          </el-button>
-          <el-button type="primary" size="mini" @click="handleDelete(row)">
-            最小值
-          </el-button>
-        </template>
+        <el-table-column label="均值" class-name="status-col" width="100">
+          <el-table-column label="总磷" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tp.mean }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总氮" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tn.mean }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总悬浮物" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tss.mean }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="叶绿素a" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.chla.mean }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="氨氮" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.nh.mean }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+
+        <el-table-column label="最小值" class-name="status-col" width="100">
+          <el-table-column label="总磷" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tp.min }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总氮" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tn.min }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总悬浮物" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tss.min }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="叶绿素a" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.chla.min }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="氨氮" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.nh.min }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="最大值" class-name="status-col" width="100">
+          <el-table-column label="总磷" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tp.max }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总氮" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tn.max }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总悬浮物" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tss.max }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="叶绿素a" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.chla.max }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="氨氮" class-name="status-col" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.nh.max }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
       </el-table-column>
     </el-table>
 
@@ -144,7 +216,7 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-let TypeOptions = [
+const TypeOptions = [
   { key: 'MODIS', display_name: 'MODIS' },
   { key: 'GF-1', display_name: '高分一号' },
   { key: 'GF-2', display_name: '高分二号' },
@@ -152,11 +224,11 @@ let TypeOptions = [
   { key: 'LANDSAT-5', display_name: 'LANDSAT-5' },
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
-let nameOptions = []
-let provinceOptions = [
-  '北京市','广东省','山东省','江苏省','河南省','上海市','河北省','浙江省','香港特别行政区','陕西省','湖南省','重庆市',
-  '福建省','天津市','云南省','四川省','广西壮族自治区','安徽省','海南省','江西省','湖北省','山西省','辽宁省','台湾省',
-  '黑龙江','内蒙古自治区','澳门特别行政区','贵州省','甘肃省','青海省','新疆维吾尔自治区','西藏自治区','吉林省','宁夏回族自治区'
+const nameOptions = []
+const provinceOptions = [
+  '北京市', '广东省', '山东省', '江苏省', '河南省', '上海市', '河北省', '浙江省', '香港特别行政区', '陕西省', '湖南省', '重庆市',
+  '福建省', '天津市', '云南省', '四川省', '广西壮族自治区', '安徽省', '海南省', '江西省', '湖北省', '山西省', '辽宁省', '台湾省',
+  '黑龙江', '内蒙古自治区', '澳门特别行政区', '贵州省', '甘肃省', '青海省', '新疆维吾尔自治区', '西藏自治区', '吉林省', '宁夏回族自治区'
 ]
 // arr to obj, such as { CN : "China", US : "USA" }
 const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
@@ -202,11 +274,11 @@ export default {
         type: undefined,
         id: undefined,
         dateRange: undefined,
-        city: undefined,
+        city: undefined
       },
       TypeOptions,
       provinceOptions,
-      provinceNunique:0,
+      provinceNunique: 0,
       nameOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       showReviewer: false,
@@ -254,7 +326,7 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getUnique(){
+    getUnique() {
       this.listLoading = true
       fetchUnique(this.uniqueQuery).then(response => {
         this.provinceOptions = response.data.provinceUnique
@@ -309,7 +381,7 @@ export default {
       // this.dialogStatus = 'view'
       // this.dialogFormVisible = true
       this.$router.push({
-          path: `/monitorEvaluation/monitor/${row.id}`,
+        path: `/monitorEvaluation/monitor/${row.id}`
       })
     },
     handleCreate() {

@@ -1,75 +1,5 @@
 <template>
   <div class="monitor-container">
-    <!-- <div class="filter-container">
-      <el-input v-model="listQuery.name" placeholder="水体" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.type" placeholder="数据源" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in TypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
-    </div> -->
-
-    <!-- <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-    >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="拍摄日期" width="150px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="水体" min-width="150px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="省份" width="80px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.province }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="城市" width="80px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.city }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="类型" class-name="status-col" width="100">
-        <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
-          </el-button>
-          <el-button type="primary" size="mini" @click="handleView(row)">
-            查看
-          </el-button>
-          <el-button type="primary" size="mini" @click="handleDelete(row)">
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table> -->
-
     <el-row :gutter="24" style="margin:20px">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="form-wrapper">
@@ -77,9 +7,6 @@
             <el-form-item label="ID" prop="id">
               <el-input v-model="listForm.id" :disabled="true" />
             </el-form-item>
-            <!-- <el-form-item label="水体" prop='id'>
-              <div><h3>{{listForm.name}}</h3></div>
-            </el-form-item> -->
             <el-form-item label="水体" prop="name">
               <el-input v-model="listForm.name" :disabled="true" />
             </el-form-item>
@@ -111,7 +38,7 @@
               <el-input v-model="listForm.tp.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
-              <el-button type="primary" round="True" size="medium" @click="displayResult('tp')">总磷反演</el-button>
+              <el-button type="primary" round="True" size="medium" @click="displayResult(retrieval_params.tp)">总磷反演</el-button>
             </el-form-item>
             <el-form-item style="vertical-align:middle;text-align:center">
               <img v-if="listForm.tp.resultPicture" :src="listForm.tp.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
@@ -129,7 +56,7 @@
               <el-input v-model="listForm.tn.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
-              <el-button type="primary" round="True" size="medium" @click="displayResult('tn')">总氮反演</el-button>
+              <el-button type="primary" round="True" size="medium" @click="displayResult(retrieval_params.tn)">总氮反演</el-button>
             </el-form-item>
             <el-form-item style="vertical-align:middle;text-align:center">
               <img v-if="listForm.tn.resultPicture" :src="listForm.tn.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
@@ -150,7 +77,7 @@
               <el-input v-model="listForm.chla.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
-              <el-button type="primary" round="True" size="medium" @click="displayResult('chla')">叶绿素a反演</el-button>
+              <el-button type="primary" round="True" size="medium" @click="displayResult(retrieval_params.chla)">叶绿素a反演</el-button>
             </el-form-item>
             <el-form-item style="vertical-align:middle;text-align:center">
               <img v-if="listForm.chla.resultPicture" :src="listForm.chla.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
@@ -168,7 +95,7 @@
               <el-input v-model="listForm.tss.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
-              <el-button type="primary" round="True" size="medium" @click="displayResult('tss')">总悬浮物反演</el-button>
+              <el-button type="primary" round="True" size="medium" @click="displayResult(retrieval_params.tss)">总悬浮物反演</el-button>
             </el-form-item>
             <el-form-item style="vertical-align:middle;text-align:center">
               <img v-if="listForm.tss.resultPicture" :src="listForm.tss.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
@@ -186,7 +113,7 @@
               <el-input v-model="listForm.nh.para2" placeholder="5" />
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
-              <el-button type="primary" round="True" size="medium" @click="displayResult('nh')">氨氮反演</el-button>
+              <el-button type="primary" round="True" size="medium" @click="displayResult(retrieval_params.nh)">氨氮反演</el-button>
             </el-form-item>
             <el-form-item style="vertical-align:middle;text-align:center">
               <img v-if="listForm.nh.resultPicture" :src="listForm.nh.resultPicture" style="width:200px;height:200px;display:block,margin-top:auto;margin-bottom:auto;">
@@ -201,7 +128,7 @@
         <div class="form-wrapper">
           <el-form ref="listForm.evaluate" :model="listForm" prop="listForm.evaluate" label-width="100px">
             <el-form-item label="水质评价方法">
-              <el-select v-model="value" placeholder="请选择">
+              <el-select v-model="levelSelect" placeholder="请选择">
                 <el-option
                   v-for="item in evaluteMethodOptions"
                   :key="item.value"
@@ -212,7 +139,7 @@
               </el-select>
             </el-form-item>
             <el-form-item size="medium" style="vertical-align:middle;text-align:center">
-              <el-button type="primary" round="True" size="medium" @click="displayLevel('single')">水质评价</el-button>
+              <el-button type="primary" round="True" size="medium" @click="displayLevel(levelSelect)">水质评价</el-button>
             </el-form-item>
             <el-form-item label="水质评价结果">
               1
@@ -232,10 +159,10 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+//
+import { fetchList, fetchPv, createArticle, updateArticle, fetchResult, fetchLevel } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 const TypeOptions = [
   { key: 'MODIS', display_name: 'MODIS' },
@@ -246,9 +173,9 @@ const TypeOptions = [
   { key: 'LANDSAT-8', display_name: 'LANDSAT-8' }
 ]
 const evaluteMethodOptions = [
-  { label: 'single', value: '单因子' },
-  { label: 'multi', value: '多因子' },
-  { label: 'svr', value: 'SVR' }
+  { key: '1', label: '单因子', value: 'single', disabled: false },
+  { key: '2', label: '多因子', value: 'multi', disabled: false },
+  { key: '3', label: 'svr', value: 'svr', disabled: false }
 ]
 const provinceOptions = [
   '北京市', '广东省', '山东省', '江苏省', '河南省', '上海市', '河北省', '浙江省', '香港特别行政区', '陕西省', '湖南省', '重庆市',
@@ -260,10 +187,17 @@ const calendarTypeKeyValue = TypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
   return acc
 }, {})
-
+const retrieval_params = {
+  tp: { key: 'tp', para1: 6, para2: 6 },
+  tn: { key: 'tn', para1: 6, para2: 6 },
+  tss: { key: 'tss', para1: 6, para2: 6 },
+  cod: { key: 'cod', para1: 6, para2: 6 },
+  nh: { key: 'nh', para1: 6, para2: 6 },
+  chla: { key: 'chla', para1: 6, para2: 6 }
+}
+const levelSelect = 'single'
 export default {
   name: 'Monitor',
-  components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -282,7 +216,7 @@ export default {
     return {
       tableKey: 0,
       list: null,
-      listForm: undefined,
+      listForm: { id: this.$route.params.id },
       total: 0,
       listLoading: true,
       listQuery: {
@@ -318,7 +252,9 @@ export default {
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false,
-      multipleSelection: []
+      multipleSelection: [],
+      retrieval_params: retrieval_params,
+      levelSelect
     }
   },
   created() {
@@ -337,6 +273,26 @@ export default {
         this.list = response.data.items
         this.total = response.data.total
         this.listForm = response.data.items[0]
+        this.retrieval_params.tp.para1 = response.data.items[0].tp.para1
+        this.retrieval_params.tp.para2 = response.data.items[0].tp.para2
+
+        this.retrieval_params.tn.para1 = response.data.items[0].tn.para1
+        this.retrieval_params.tn.para2 = response.data.items[0].tn.para2
+
+        this.retrieval_params.tss.para1 = response.data.items[0].tss.para1
+        this.retrieval_params.tss.para2 = response.data.items[0].tss.para2
+
+        this.retrieval_params.chla.para1 = response.data.items[0].chla.para1
+        this.retrieval_params.chla.para2 = response.data.items[0].chla.para2
+
+        this.retrieval_params.nh.para1 = response.data.items[0].nh.para1
+        this.retrieval_params.nh.para2 = response.data.items[0].nh.para2
+
+        this.retrieval_params.cod.para1 = response.data.items[0].cod.para1
+        this.retrieval_params.cod.para2 = response.data.items[0].cod.para2
+
+        this.levelSelect = response.data.items[0].evaluate.single
+        console.log(this.levelSelect)
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -477,11 +433,13 @@ export default {
           ? 'descending'
           : ''
     },
-    displayResult: function(key) {
-      console.log(key)
+    displayResult: function(dic) {
+      console.log(dic)
+      fetchResult(dic)
     },
     displayLevel: function(key) {
       console.log(key)
+      fetchLevel(key)
     }
   }
 }

@@ -32,36 +32,44 @@ for (let i = 0; i < count; i++) {
     tp: {
       para1: 6,
       para2: 6,
+      min:0,max:124,mean:132,
+      resultFile: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     },
     tn: {
       para1: 6,
       para2: 6,
+      resultFile: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       resultPicture: 'https://uss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     },
     chla: {
       para1: 6,
       para2: 6,
+      resultFile: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     },
     tss: {
       para1: 6,
       para2: 6,
+      resultFile: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     },
     cod: {
       para1: 6,
       para2: 6,
+      resultFile: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     },
     nh: {
       para1: 6,
       para2: 6,
+      resultFile: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      resultPicture: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     },
     evalute:{
-      'single': '1',
-      'multi': '2',
-      'svr': '3',
+      single: '1',
+      multi: '2',
+      svr: '3',
     }
   }))
 }

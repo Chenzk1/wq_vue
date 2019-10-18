@@ -32,16 +32,16 @@
           <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>详细信息</span></div>
           <div class="user-bio-section-body">
             <div class="progress-item">
-              <span>水体数量:{{this.nameNunique}}</span>
+              <span>水体数量:{{ nameNunique }}</span>
             </div>
             <div class="progress-item">
-              <span>图片数量:{{this.pictureNunique}}</span>
+              <span>图片数量:{{ pictureNunique }}</span>
             </div>
             <div class="progress-item">
-              <span>时间范围：{{this.startDate | parseTime('{y}-{m}-{d}') }} ~ {{this.endDate | parseTime('{y}-{m}-{d}') }}</span>
+              <span>时间范围：{{ startDate | parseTime('{y}-{m}-{d}') }} ~ {{ endDate | parseTime('{y}-{m}-{d}') }}</span>
             </div>
             <div class="progress-item">
-              <span>数据源：{{this.typeUnique}}</span>
+              <span>数据源：{{ typeUnique }}</span>
             </div>
             <div class="progress-item">
               <span>可反演指标：总磷（TP）、总氮（TN）、叶绿素a（Chl-a）、氨氮（NH）、总悬浮物（TSS）</span>
@@ -61,22 +61,22 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Statistics',
   components: { PanThumb },
-  data(){
-    return{
-      user:{},
+  data() {
+    return {
+      user: {},
       uniqueQuery: {
-      province: undefined,
-      name: undefined,
-      type: undefined,
-      id: undefined,
-      city: undefined
+        province: undefined,
+        name: undefined,
+        type: undefined,
+        id: undefined,
+        city: undefined
       },
-      pictureNunique:0,
-      nameNunique:0,
-      typeUnique:0,
-      provinceNunique:0,
+      pictureNunique: 0,
+      nameNunique: 0,
+      typeUnique: 0,
+      provinceNunique: 0,
       startDate: undefined,
-      endDate: undefined,
+      endDate: undefined
     }
   },
   computed: {
@@ -87,7 +87,7 @@ export default {
     ])
   },
   created() {
-    this.getUser(),
+    this.getUser()
     this.getUnique()
   },
   methods: {
@@ -99,7 +99,7 @@ export default {
         avatar: this.avatar
       }
     },
-    getUnique(){
+    getUnique() {
       this.listLoading = true
       fetchUnique(this.uniqueQuery).then(response => {
         this.pictureNunique = response.data.pictureNunique
@@ -113,9 +113,8 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
-
       })
-    },
+    }
   }
 }
 </script>
